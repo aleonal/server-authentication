@@ -4,8 +4,7 @@
         <title>Sign In</title>
         <style>
             .signup {
-                border:1px solid #FFFFFF;
-                color: #444444;
+                border: 1px solid #999999;
             }
             table {
                 text-align: center;
@@ -16,9 +15,9 @@
         <script src="auth.js"></script>
     </head>
     <body>
-        <table class="signup id="form">
+        <table border="0" cellpadding="2" cellspacing="5" bgcolor="#EEEEEE" class="signup">
             <th colspan="2">Sign in</th>
-            <form method="post" action="user.php" onsubmit="return validate(this)">
+            <form method="post" action="signin.php" onsubmit="return validate(this)">
                 <tr>
                     <td>Username:</td>
                     <td><input type="text" maxlength="50" name="username"></td>

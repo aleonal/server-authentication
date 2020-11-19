@@ -19,8 +19,6 @@ function validate(form) {
     fail += validatePassword(form.password.value)
     if (fail == "") return true
     else {
-        alert(fail);
-        form.password.
         form.password.value = ""
         return false
     }
