@@ -1,17 +1,17 @@
 function validateUsername(field) {
     if (field == "") return "No username was entered.\n";
-    else if (field.length < 6)
-        return "Username must be at least 6 characters.\n";
+    else if (field.length < 5)
+        return "Username must be at least 5 characters.\n";
     else if (/[^a-zA-Z0-9_-]/.test(field))
         return "Username contains invalid characters.\n";
     return ""
 }
 function validatePassword(field) {
     if (field == "") return "No passsword was entered.\n";
-    else if (field.length < 6)
-        return "Password must be at least 6 characters.\n";
-    else if (!/[a-z]/.test(field) || !/[A-Z]/.test(field) || !/[0-9]/.test(field))
-        return "Passwords require at least 1 lowercase letter, uppercase letter, and number.\n";
+    else if (field.length < 5)
+        return "Password must be at least 5 characters.\n";
+    else if (!/[a-z]/.test(field) || !/[0-9]/.test(field))
+        return "Passwords require at least 1 lowercase letter and number.\n";
     return ""
 }
 function validate(form) {
