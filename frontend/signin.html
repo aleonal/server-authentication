@@ -12,12 +12,13 @@
                 margin-right: auto;
             }
         </style>
-        <script src="auth.js"></script>
+        <!-- This has to be relative to where this document is being called from -->
+        <script src="../frontend/auth.js"></script>
     </head>
     <body>
         <table border="0" cellpadding="2" cellspacing="5" bgcolor="#EEEEEE" class="signup">
             <th colspan="2">Sign in</th>
-            <form method="post" action="signin.php" onsubmit="return validate(this)">
+            <form method="post" action="../backend/signin.php" onsubmit="return validate(this)">
                 <tr>
                     <td>Username:</td>
                     <td><input type="text" maxlength="50" name="username"></td>

@@ -14,7 +14,6 @@
         // If the result does not contain any lexical, we can attempt to validate credentials within database
         if($result == "") {
             $result = validate_credentials($connection, $username, $password);
-
         }
 
         /* If the credentials were validated in the database, we re-direct them to the main page with a session,
@@ -24,7 +23,7 @@
         */ 
         if ($result == "") {
             // TODO: Create session
-            echo file_get_contents("./mainpage.html");
+            echo file_get_contents("../frontend/mainpage.html");
             exit;
         } else {
             echo <<< _END
@@ -42,7 +41,7 @@
                                 margin-right: auto;
                             }
                         </style>
-                        <script src="auth.js"></script>
+                        <script src="../frontend/auth.js"></script>
                     </head>
                     <body>
                         <table border="0" cellpadding="2" cellspacing="5" bgcolor="#EEEEEE" class="signup" id="form">
@@ -52,7 +51,7 @@
                                     $result
                                 </font></td>
                             </tr>
-                            <form method="post" action="signin.php">
+                            <form method="post" action="signin.php" onsubmit="return validate(this)">
                                 <tr>
                                     <td>Username:</td>
                                     <td><input type="text" maxlength="50" name="username"></td>
@@ -71,9 +70,8 @@
             _END;
             exit;
         }
-
     } else {
-        echo file_get_contents("./signin.html");
+        echo file_get_contents("../frontend/signin.html");
         exit;
     }
 
