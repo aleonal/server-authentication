@@ -2,42 +2,53 @@
 <html>
     <head>
         <title>Assignment 2 Main Page</title>
+        <link rel="stylesheet" href="../frontend/nav.css">
         <style>
-            .nav-right {
-                float: right;
+            img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 40%;
             }
-            .nav {
-                background-color: #000000;
-                overflow: hidden;
-            }
-            .nav a {
-                float: right;
+            h2 {
                 text-align: center;
-                padding: 14px 16px;
-                background-color:#000000;
-                color: #EEEEEE;
             }
-            .nav a:hover {
-                background-color:#EEEEEE;
-                color:#000000;
-            }
-
         </style>
-        <script src="../frontend/mainpage.js">
+        <script src="../frontend/nav.js"></script>
+        <script>
+            var status = "<?php echo $status; ?>";
         </script>
     </head>
     <body>
         <nav class="nav">
-            <div class="nav-right">
-                <div id='hidden-form' style="display:none;"></div>
-                <a id="sign-button" href="#" onclick="sign_action(this); return false;"></a>
+            <div class="nav-left">
                 <a id="account-button"></a>
-                <script>
-                    var status = "<?php echo $status; ?>";
-                    account_button(document.getElementById("account-button"))
-                    sign_button(document.getElementById("sign-button"))
-                </script>
+                <a id="admin-button"></a>
             </div>
+            <div class="nav-right">
+                <a id="sign-button" href="#" onclick="sign_action(this); return false;"></a>
+            </div>
+            <div id='hidden-form' style="display:none;"></div>
+            <script>
+                account_button(document.getElementById("account-button"))
+                sign_button(document.getElementById("sign-button"))
+                admin_button(document.getElementById("admin-button"))
+            </script>          
         </nav>
+        
+        <h2 id="banner"></h2>
+        <img id="welcome-woof">
+        <script>
+            var username = "<?php echo $_SESSION['username']; ?>"
+            if (status == '0') {
+                document.getElementById("banner").innerHTML = "Welcome visitor!"
+                document.getElementById("welcome-woof").src = "https://images.pexels.com/photos/3357026/pexels-photo-3357026.jpeg?cs=srgb&dl=pexels-andreas-schmolmueller-3357026.jpg&fm=jpg"
+                document.getElementById("welcome-woof").alt = "Brown dog on a beach"
+            } else {
+                document.getElementById("banner").innerHTML = "Hello ".concat(username).concat("!")
+                document.getElementById("welcome-woof").src = "https://images.pexels.com/photos/666870/pexels-photo-666870.jpeg?cs=srgb&dl=pexels-tuan-nguyen-666870.jpg&fm=jpg"
+                document.getElementById("welcome-woof").alt = "White dog smiling"
+            }
+        </script>
     </body>
 </html>

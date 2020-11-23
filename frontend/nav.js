@@ -1,10 +1,20 @@
 function account_button(button) { 
-    button.innerHTML = "Account"
-
     if (status == '0') {
-        button.href = "../backend/signin.php"
-    } else {
+        button.style.visibility = "hidden"
+    }
+    else {
+        button.innerHTML = "Account"
         button.href = "../backend/user.php"
+
+    }
+}
+
+function admin_button(button) {
+    if (status == '2') {
+        button.innerHTML = "Admin Page"
+        button.href = "../backend/admin.php"
+    } else {
+        button.style.visibility = "hidden"
     }
 }
 

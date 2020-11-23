@@ -1,0 +1,32 @@
+.nav {
+    background-color: #000000;
+    overflow: hidden;
+}
+
+.nav-left {
+    float:left;
+}
+
+.nav-right {
+    float: right;
+}
+
+.nav a {
+    text-align: center;
+    padding: 14px 16px;
+    background-color:#000000;
+    color: #EEEEEE;
+}
+
+.nav a:hover {
+    background-color:#EEEEEE;
+    color:#000000;
+}
+
+.nav-left a {
+    float: left;
+}
+
+.nav-right a {
+    float: right;
+}
