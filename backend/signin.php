@@ -1,6 +1,17 @@
 <?php
     require_once './session.php';
 
+    // Logic to handle a sign out
+    if (isset($_POST['sign-action']) && $_POST['sign-action'] == 'Sign-Out') {
+        $_SESSION = array();
+        setcookie(session_name(), '', time() - 2592000, '/');
+        session_destroy();
+
+        header("Location: ./mainpage.php");
+        exit;
+    }
+
+    // Logic to handle an attempt to sign-in
     if (isset($_POST['username']) && isset($_POST['password'])) {
         // Attempt to validate username and password
         $username = fix_input($_POST['username']);
@@ -17,7 +28,7 @@
             $result = validate_credentials($connection, $username, $password);
             
             if($result == "") {
-                header("Location: ./mainpage.php");
+                header("Location: ./mainpage.php", true, 301);
                 exit;
             }
         }
@@ -37,7 +48,7 @@
                             margin-right: auto;
                         }
                     </style>
-                    <script src="../frontend/auth.js"></script>
+                    <script src="../frontend/signin.js"></script>
                 </head>
                 <body>
                     <table border="0" cellpadding="2" cellspacing="5" bgcolor="#EEEEEE" class="signup" id="form">
@@ -69,7 +80,7 @@
     } else {
         // if user is not logged in and tries to access account page or admin page,
         // then they are redirected to log in otherwise back to main page
-        echo file_get_contents("../frontend/signin.html");
+        include("../frontend/signin.html");
         exit;
     }
 

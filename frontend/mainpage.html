@@ -1,11 +1,43 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Assignment 2</title>
+        <title>Assignment 2 Main Page</title>
         <style>
+            .nav-right {
+                float: right;
+            }
+            .nav {
+                background-color: #000000;
+                overflow: hidden;
+            }
+            .nav a {
+                float: right;
+                text-align: center;
+                padding: 14px 16px;
+                background-color:#000000;
+                color: #EEEEEE;
+            }
+            .nav a:hover {
+                background-color:#EEEEEE;
+                color:#000000;
+            }
+
         </style>
+        <script src="../frontend/mainpage.js">
+        </script>
     </head>
     <body>
-        Test
+        <nav class="nav">
+            <div class="nav-right">
+                <div id='hidden-form' style="display:none;"></div>
+                <a id="sign-button" href="#" onclick="sign_action(this); return false;"></a>
+                <a id="account-button"></a>
+                <script>
+                    var status = "<?php echo $status; ?>";
+                    account_button(document.getElementById("account-button"))
+                    sign_button(document.getElementById("sign-button"))
+                </script>
+            </div>
+        </nav>
     </body>
 </html>

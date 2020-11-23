@@ -1,3 +1,4 @@
 <?php
-    echo "HI";
+    require_once './session.php';
+    echo "USER";
 ?>

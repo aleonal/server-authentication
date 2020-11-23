@@ -1,5 +1,5 @@
 <?php
     require_once './session.php';
-
-    echo $status;
+    include("../frontend/mainpage.html");
+    exit;
 ?>
