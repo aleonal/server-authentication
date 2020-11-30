@@ -4,12 +4,6 @@
         <title>Assignment 2 Admin Page</title>
         <link rel="stylesheet" href="../frontend/nav.css">
         <style>
-            img {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 40%;
-            }
             h2 {
                 text-align: center;
             }
@@ -20,7 +14,7 @@
                 margin-top: auto;
                 margin-bottom: auto;
             }
-            . {
+            .data-table {
                 border: 1px solid #999999;
             }
         </style>
@@ -46,16 +40,66 @@
             </script>          
         </nav>
         <h2 id="banner"></h2>
-
-        <table cellpadding="2" cellspacing="5" id='layout-table'>
+        <table>
             <tr>
-                <td><img id="welcome-woof"></td>
-                <td>
-                   table
+                <td style="width: 40%;">
+                    <table border='0' bgcolor='#EEEEEE' cellpadding="2" cellspacing="5" class='data-table' id='add-user'>
+                        <th colspan="2">Sign in</th>
+                        <tr>
+                            <td colspan="2"><font color=red size=2 id='error'></font></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <form method="post" action="../backend/signin.php" onsubmit="return validate(this)">
+                                    <tr>
+                                        <td>Username:</td>
+                                        <td><input type="text" maxlength="50" name="username"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Password:</td>
+                                        <td><input type="password" maxlength="255" name="password"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><input type="submit" value="Sign In"></td>
+                                    </tr>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 60%;">
+                    <table style="overflow-y:auto;" border='0' bgcolor='#EEEEEE' cellpadding="2" cellspacing="5" class='data-table' id='display-user'>
+                        <tr id='column-titles'></tr>
+                        <tr id='user-row'></tr>
+                    </table>
                 </td>
             </tr>
         </table>
         <script>
+            var user_data = JSON.parse('<?php echo json_encode($_SESSION); ?>')
+
+            // set up column titles
+            for (var key in user_data) {
+                if (user_data.hasOwnProperty(key) && key != "password" && key != "check") {
+                    document.getElementById("column-titles").innerHTML += 
+                        "<th>" + key + "</th>"
+                }
+            }
+
+            // for (var key in user_data) {
+            //     if (user_data.hasOwnProperty(key)) {
+            //         switch(key) {
+            //             case "user_type":
+            //                 continue
+            //             case "check":
+            //                 continue
+            //             default:
+            //                 document.getElementById("userdatatable").innerHTML += 
+            //                     "<tr><td style='text-align: left;'>" + key + ": </td><td style='text-align: left;'>" + user_data[key] + "</td></tr>"
+            //         }
+            //     }
+            // } 
+
             var username = "<?php echo $_SESSION['username']; ?>"
             document.getElementById("banner").innerHTML = "Be careful around here ".concat(username).concat(", we're in the admin page!")
             document.getElementById("welcome-woof").src = "https://www.publicdomainpictures.net/pictures/270000/velka/dog-and-computer-screen.jpg"
