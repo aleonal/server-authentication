@@ -13,6 +13,16 @@
             h2 {
                 text-align: center;
             }
+            table {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: auto;
+                margin-bottom: auto;
+            }
+            . {
+                border: 1px solid #999999;
+            }
         </style>
         <script src="../frontend/nav.js"></script>
     </head>
@@ -35,9 +45,16 @@
                 admin_button(document.getElementById("admin-button"))
             </script>          
         </nav>
-        
         <h2 id="banner"></h2>
-        <img id="welcome-woof">
+
+        <table cellpadding="2" cellspacing="5" id='layout-table'>
+            <tr>
+                <td><img id="welcome-woof"></td>
+                <td>
+                   table
+                </td>
+            </tr>
+        </table>
         <script>
             var username = "<?php echo $_SESSION['username']; ?>"
             document.getElementById("banner").innerHTML = "Be careful around here ".concat(username).concat(", we're in the admin page!")
