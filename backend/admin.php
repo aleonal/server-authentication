@@ -5,9 +5,33 @@
     if ($status < 2) {
         header("Location: ../backend/mainpage.php?error=20", true, 301);
     }else {
-        if (isset($_POST['input'])) {
-            insert_user();
+        if (isset($_POST['confirm_password'])) {
+            // Attempt to validate username and passwords
+            $username = fix_input($_POST['username']);
+            $password = fix_input($_POST['password']);
+            $c_password = fix_input($_POST['confirm_password']);
+            $result = "";
+            $result .= validate_username($username);
+            $result .= validate_password($password);
+            $result .= validate_password($c_password);
+
+            if ($result == "") {
+                // Make sure passwords match
+                $result = compare_passwords($password, $c_password);
+
+                // To avoid processing this if passwords don't match, we nest another if-statement
+                if ($result == "") {
+                    // Make sure username is unique
+                    $result = check_user_uniqueness($username);
+                    
+                    // If the username is unique, we can go ahead and insert them into the database
+                    if ($result =="") {
+                        insert_user();
+                    }
+                }
+            }
         }
+        
         $user_data = get_user_data();
         include("../frontend/admin.html");
     }

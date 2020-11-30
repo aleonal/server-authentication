@@ -29,6 +29,18 @@
             $result = validate_credentials($username, $password);
             
             if($result == "") {
+                $_SESSION['user_type'] = $row[0];
+                $_SESSION['username'] = $row[1];
+                $_SESSION['first name'] = $row[3];
+                $_SESSION['last name'] = $row[4];
+                $_SESSION['last login'] = $row[5];
+                $_SESSION['date created'] = $row[6];
+                $_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+
+                // We update the last login time after setting session variables
+                log_successful_signin($connection, $username);
+                $connection->close();
+
                 header("Location: ./mainpage.php", true, 301);
                 exit;
             }
@@ -43,44 +55,6 @@
 
     include("../frontend/signin.html");
     exit;
- 
-    function validate_credentials($username, $password) {
-        // Establish connection to database
-        include 'login.php';
-        $connection = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connection_error) return "Fatal error attempting to connect to database.<br>";
-        
-        // Search for user
-        $q = "SELECT * FROM users WHERE username='$username'";
-        $r = $connection->query($q);
-
-        // If no results, user was not found
-        if (!$r) return "User not found.<br>";
-        elseif ($r->num_rows) {
-
-            // We get the result contents to attempt to verify the password
-            $row = $r->fetch_array(MYSQLI_NUM);
-            $r->close();
-
-            // If password is verified, we start session
-            if(password_verify($password.S, $row[2])){
-                $_SESSION['user_type'] = $row[0];
-                $_SESSION['username'] = $row[1];
-                $_SESSION['first name'] = $row[3];
-                $_SESSION['last name'] = $row[4];
-                $_SESSION['last login'] = $row[5];
-                $_SESSION['date created'] = $row[6];
-                $_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
-
-                // We update the last login time after setting session variables
-                log_successful_signin($connection, $username);
-                $connection->close();
-                return "";
-            }
-            else return "Invalid username/password combination.<br>";
-        }
-        else return "Invalid username/password combination.<br>";
-    }
 
     function log_successful_signin($connection, $username) {
         $q = "UPDATE users SET last_login=now() WHERE username='$username'";

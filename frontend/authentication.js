@@ -32,12 +32,13 @@ function validate_add(form) {
         if (form.password.normalize() !== form.confirm_password.normalize()) {
             alert("Passwords do not match.\n")
             form.password.value = ""
-            form.confirm_password = ""
+            form.confirm_password.value = ""
             return false
         } else {
             return true
         }
     } else {
+        form.confirm_password.value = ""
         return false
     }
 }
