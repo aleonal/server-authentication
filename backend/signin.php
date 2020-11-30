@@ -107,7 +107,7 @@
             }
             else return "Invalid username/password combination.<br>";
         }
-        else return "'-$username-'<br>Invalid username/password combination.<br>";
+        else return "Invalid username/password combination.<br>";
     }
     
     // Sanitization functions
