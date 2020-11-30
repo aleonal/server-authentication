@@ -25,14 +25,16 @@
                     $result = check_user_uniqueness($username);
                     
                     // If the username is unique, we can go ahead and insert them into the database
-                    if ($result =="") {
-                        insert_user();
+                    if ($result == "") {
+                        $result = insert_user();
+                        
+                        if ($result == "") {
+                            $user_data = get_user_data();
+                        }
                     }
                 }
             }
         }
-        
-        $user_data = get_user_data();
         include("../frontend/admin.html");
     }
 
@@ -76,13 +78,13 @@
             $name = $_POST['first_name'];
             $lname = $_POST['last_name'];
 
-            if(!$stmt->execute()) die("Error inserting user.");
+            if(!$stmt->execute()) return "Error inserting user.<br>";
             
-            echo "Row inserted";
             $stmt->close();
+            $connection->close();
+            return "";
         } else {
-            echo $connection->errno. ' ' . $conncetion->error;
+            return "Error inserting user.<br>";
         }
-        $connection->close();
     }
 ?>

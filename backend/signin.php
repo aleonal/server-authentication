@@ -28,18 +28,17 @@
         if($result == "") {
             $result = validate_credentials($username, $password);
             
-            if($result == "") {
-                $_SESSION['user_type'] = $row[0];
-                $_SESSION['username'] = $row[1];
-                $_SESSION['first name'] = $row[3];
-                $_SESSION['last name'] = $row[4];
-                $_SESSION['last login'] = $row[5];
-                $_SESSION['date created'] = $row[6];
+            if(gettype($result) == "array") {
+                $_SESSION['user_type'] = $result[0];
+                $_SESSION['username'] = $result[1];
+                $_SESSION['first name'] = $result[3];
+                $_SESSION['last name'] = $result[4];
+                $_SESSION['last login'] = $result[5];
+                $_SESSION['date created'] = $result[6];
                 $_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 
                 // We update the last login time after setting session variables
-                log_successful_signin($connection, $username);
-                $connection->close();
+                log_successful_signin($username);
 
                 header("Location: ./mainpage.php", true, 301);
                 exit;
@@ -56,10 +55,14 @@
     include("../frontend/signin.html");
     exit;
 
-    function log_successful_signin($connection, $username) {
+    function log_successful_signin($username) {
+        require_once 'login.php';
+        $connection = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connection_error) return "Fatal error attempting to connect to database.<br>";
+
         $q = "UPDATE users SET last_login=now() WHERE username='$username'";
         $result = $connection->query($q);
 
-        if (!$result) die ("Updating last log-in failed.");
+        if (!$result) return "Updating last log-in failed.";
     }
 ?>
