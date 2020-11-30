@@ -43,10 +43,8 @@
                 admin_button(document.getElementById("admin-button"))
             </script>          
         </nav>
-        <br>
-        <table id='user-table' class='table' cellpadding='2' cellspacing='5'>
-            <th id="banner" colspan="2"></th>
-        </table>
+        <h2 id="banner" colspan="2"></h2>
+        <table id='user-table' class='table' cellpadding='2' cellspacing='5'></table>
         <br>
         <img id="welcome-woof">
 
@@ -67,7 +65,7 @@
                 }
             }            
 
-            document.getElementById("banner").innerHTML = "<h2>You are in the user's page, make yourself at home!</h2>"
+            document.getElementById("banner").innerHTML = "You are in the user's page, make yourself at home!<br>"
             document.getElementById("welcome-woof").src = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/cute-shiba-inu-dog-with-laptop-in-room-royalty-free-image-882303800-1551122520.jpg"
             document.getElementById("welcome-woof").alt = "black and white dog on laptop"
         </script>
