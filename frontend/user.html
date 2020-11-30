@@ -13,6 +13,11 @@
             h2 {
                 text-align: center;
             }
+            table {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
         </style>
         <script src="../frontend/nav.js"></script>
         <script>
@@ -22,6 +27,7 @@
     <body>
         <nav class="nav">
             <div class="nav-left">
+                <a id="home-button"></a>
                 <a id="account-button"></a>
                 <a id="admin-button"></a>
             </div>
@@ -30,17 +36,38 @@
             </div>
             <div id='hidden-form' style="display:none;"></div>
             <script>
+                var status = "<?php echo $status; ?>";
+                home_button(document.getElementById("home-button"))
                 account_button(document.getElementById("account-button"))
                 sign_button(document.getElementById("sign-button"))
                 admin_button(document.getElementById("admin-button"))
             </script>          
         </nav>
-        
-        <h2 id="banner"></h2>
+        <br>
+        <table id='user-table' class='table' cellpadding='2' cellspacing='5'>
+            <th id="banner" colspan="2"></th>
+        </table>
+        <br>
         <img id="welcome-woof">
+
         <script>
-            var username = "<?php echo $_SESSION['username']; ?>"
-            document.getElementById("banner").innerHTML = "You are in the user's page, ".concat(username).concat(". Make yourself at home!")
+            var user_data = JSON.parse('<?php echo json_encode($_SESSION); ?>')
+
+            for (var key in user_data) {
+                if (user_data.hasOwnProperty(key)) {
+                    switch(key) {
+                        case "user_type":
+                            continue
+                        case "check":
+                            continue
+                        default:
+                            document.getElementById("user-table").innerHTML += 
+                                "<tr><td style='text-align: left;''>" + key + ": </td><td style='text-align: left;'>" + user_data[key] + "</td></tr>"
+                    }
+                }
+            }            
+
+            document.getElementById("banner").innerHTML = "You are in the user's page, make yourself at home!<br><br>"
             document.getElementById("welcome-woof").src = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/cute-shiba-inu-dog-with-laptop-in-room-royalty-free-image-882303800-1551122520.jpg"
             document.getElementById("welcome-woof").alt = "black and white dog on laptop"
         </script>

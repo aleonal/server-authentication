@@ -1,9 +1,14 @@
+function home_button(button) {
+    button.innerHTML = "Home"
+    button.href = "../backend/mainpage.php"
+}
+
 function account_button(button) { 
     if (status == '0') {
-        button.style.visibility = "hidden"
+        button.style.display = "None"
     }
     else {
-        button.innerHTML = "Account"
+        button.innerHTML = "User Page"
         button.href = "../backend/user.php"
 
     }
@@ -14,7 +19,7 @@ function admin_button(button) {
         button.innerHTML = "Admin Page"
         button.href = "../backend/admin.php"
     } else {
-        button.style.visibility = "hidden"
+        button.style.display = "None"
     }
 }
 

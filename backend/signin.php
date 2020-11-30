@@ -1,14 +1,15 @@
 <?php
     require_once './session.php';
 
-    // Logic to handle a sign out
-    if (isset($_POST['sign-action']) && $_POST['sign-action'] == 'Sign-Out') {
+    // Logic to handle signin and signout
+    if (isset($_POST['sign-action'])) {
         $_SESSION = array();
-        setcookie(session_name(), '', time() - 2592000, '/');
-        session_destroy();
 
-        header("Location: ./mainpage.php");
-        exit;
+        if ($_POST['sign-action'] == 'Sign-Out') {
+            session_destroy();
+            header("Location: ./mainpage.php");
+            exit;
+        }
     }
 
     // Logic to handle an attempt to sign-in
@@ -17,7 +18,6 @@
         $username = fix_input($_POST['username']);
         $password = fix_input($_POST['password']);
         $result = "";
-        
         $result .= validate_username($username);
         $result .= validate_password($password);
 
@@ -25,7 +25,7 @@
            otherwise we re-print the form.
         */
         if($result == "") {
-            $result = validate_credentials($connection, $username, $password);
+            $result = validate_credentials($username, $password);
             
             if($result == "") {
                 header("Location: ./mainpage.php", true, 301);
@@ -33,56 +33,16 @@
             }
         }
 
-        echo <<< _END
-            <html>
-                <head>
-                    <title>Sign In</title>
-                    <style>
-                        .signup {
-                            border: 1px solid #999999;
-                            color: #444444;
-                        }
-                        table {
-                            text-align: center;
-                            margin-left: auto;
-                            margin-right: auto;
-                        }
-                    </style>
-                    <script src="../frontend/signin.js"></script>
-                </head>
-                <body>
-                    <table border="0" cellpadding="2" cellspacing="5" bgcolor="#EEEEEE" class="signup" id="form">
-                        <th colspan="2">Sign in</th>
-                        <tr>
-                            <td colspan="2"><font color=red size=2>
-                                $result
-                            </font></td>
-                        </tr>
-                        <form method="post" action="signin.php" onsubmit="return validate(this)">
-                            <tr>
-                                <td>Username:</td>
-                                <td><input type="text" maxlength="50" name="username"></td>
-                            </tr>
-                            <tr>
-                                <td>Password:</td>
-                                <td><input type="password" maxlength="255" name="password"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><input type="submit" value="Sign In"></td>
-                            </tr>
-                        </form>
-                    </table>
-                </body>
-            </html>
-        _END;
-        exit;
+    }
 
-    } else {
-        // if user is not logged in and tries to access account page or admin page,
-        // then they are redirected to log in otherwise back to main page
-        include("../frontend/signin.html");
+    // If already logged in, take us back to main page. This is in case people go back to previous page
+    if ($status > 0) {
+        header("Location: ./mainpage.php");
         exit;
     }
+
+    include("../frontend/signin.html");
+    exit;
 
     // Input validation functions
     function validate_username($field) {
@@ -112,7 +72,7 @@
         return "";
     }
  
-    function validate_credentials($connection, $username, $password) {
+    function validate_credentials($username, $password) {
         // Establish connection to database
         include 'login.php';
         $connection = new mysqli($hn, $un, $pw, $db);
@@ -121,7 +81,6 @@
         // Search for user
         $q = "SELECT * FROM users WHERE username='$username'";
         $r = $connection->query($q);
-        $connection->close();
 
         // If no results, user was not found
         if (!$r) return "User not found.<br>";
@@ -135,10 +94,15 @@
             if(password_verify($password.S, $row[2])){
                 $_SESSION['user_type'] = $row[0];
                 $_SESSION['username'] = $row[1];
-                $_SESSION['first_name'] = $row[3];
-                $_SESSION['last_name'] = $row[4];
-                $_SESSION['last_login'] = $row[5];
-                $_SESSION['date_created'] = $row[6];
+                $_SESSION['first name'] = $row[3];
+                $_SESSION['last name'] = $row[4];
+                $_SESSION['last login'] = $row[5];
+                $_SESSION['date created'] = $row[6];
+                $_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+
+                // We update the last login time after setting session variables
+                log_successful_signin($connection, $username);
+                $connection->close();
                 return "";
             }
             else return "Invalid username/password combination.<br>";
@@ -159,5 +123,12 @@
             $string = stripslashes($string);
         }
         return htmlentities($conn->real_escape_string($string));
+    }
+
+    function log_successful_signin($connection, $username) {
+        $q = "UPDATE users SET last_login=now() WHERE username='$username'";
+        $result = $connection->query($q);
+
+        if (!$result) die ("Updating last log-in failed.");
     }
 ?>

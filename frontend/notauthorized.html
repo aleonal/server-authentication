@@ -23,13 +23,11 @@
             }
         </style>
         <script src="../frontend/nav.js"></script>
-        <script>
-            var status = "<?php echo $status; ?>";
-        </script>
     </head>
     <body>
         <nav class="nav">
             <div class="nav-left">
+                <a id="home-button"></a>
                 <a id="account-button"></a>
                 <a id="admin-button"></a>
             </div>
@@ -38,6 +36,8 @@
             </div>
             <div id='hidden-form' style="display:none;"></div>
             <script>
+                var status = "<?php echo $status; ?>";
+                home_button(document.getElementById("home-button"))
                 account_button(document.getElementById("account-button"))
                 sign_button(document.getElementById("sign-button"))
                 admin_button(document.getElementById("admin-button"))

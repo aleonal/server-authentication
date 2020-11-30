@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Sign In</title>
+        <title>Assignment 2 Sign In</title>
+        <link rel="stylesheet" href="../frontend/nav.css">
         <style>
+            img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+            }
             .signup {
                 border: 1px solid #999999;
+            }
+
+            .main-table {
+                margin-left:auto;
+                margin-right:auto;
+                margin-top:auto;
+                margin-bottom:auto;
+                padding-top:100;
             }
             table {
                 text-align: center;
@@ -12,25 +27,69 @@
                 margin-right: auto;
             }
         </style>
-        <!-- This has to be relative to where this document is being called from -->
         <script src="../frontend/signin.js"></script>
+        <script src="../frontend/nav.js"></script>
     </head>
     <body>
-        <table border="0" cellpadding="2" cellspacing="5" bgcolor="#EEEEEE" class="signup">
-            <th colspan="2">Sign in</th>
-            <form method="post" action="../backend/signin.php" onsubmit="return validate(this)">
-                <tr>
-                    <td>Username:</td>
-                    <td><input type="text" maxlength="50" name="username"></td>
-                </tr>
-                <tr>
-                    <td>Password:</td>
-                    <td><input type="password" maxlength="255" name="password"></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" value="Sign In"></td>
-                </tr>
-            </form>
+        <nav class="nav">
+            <div class="nav-left">
+                <a id="home-button"></a>
+                <a id="account-button"></a>
+                <a id="admin-button"></a>
+            </div>
+            <div class="nav-right">
+                <a id="sign-button" href="#" onclick="sign_action(this); return false;"></a>
+            </div>
+            <div id='hidden-form' style="display:none;"></div>
+            <script>
+                var status = "<?php echo $status; ?>";
+                home_button(document.getElementById("home-button"))
+                account_button(document.getElementById("account-button"))
+                sign_button(document.getElementById("sign-button"))
+                admin_button(document.getElementById("admin-button"))
+            </script>          
+        </nav>
+        <br>
+        <table class='main-table' cellpadding="2" cellspacing="5">
+            <tr>
+                <td>
+                    <img id="welcome-woof" src="https://cdn.pixabay.com/photo/2019/12/23/11/29/dog-4714363_960_720.jpg"> 
+                </td>
+                <td>
+                    <table border="0" cellpadding="2" cellspacing="5" bgcolor="#EEEEEE" class="signup">
+                        <th colspan="2">Sign in</th>
+                        <tr>
+                            <td colspan="2">
+                                <font color=red size=2 id='error'>
+                                    <script>
+                                        var result = "<?php echo $result; ?>"
+                                        if (result != '') {
+                                            document.getElementById("error").innerHTML = result
+                                        }
+                                    </script>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <form method="post" action="../backend/signin.php" onsubmit="return validate(this)">
+                                    <tr>
+                                        <td>Username:</td>
+                                        <td><input type="text" maxlength="50" name="username"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Password:</td>
+                                        <td><input type="password" maxlength="255" name="password"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><input type="submit" value="Sign In"></td>
+                                    </tr>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
         </table>
     </body>
 </html>
