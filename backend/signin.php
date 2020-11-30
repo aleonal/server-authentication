@@ -1,5 +1,6 @@
 <?php
     require_once './session.php';
+    require_once './authentication.php';
 
     // Logic to handle signin and signout
     if (isset($_POST['sign-action'])) {
@@ -32,7 +33,6 @@
                 exit;
             }
         }
-
     }
 
     // If already logged in, take us back to main page. This is in case people go back to previous page
@@ -43,34 +43,6 @@
 
     include("../frontend/signin.html");
     exit;
-
-    // Input validation functions
-    function validate_username($field) {
-        if ($field == "") return "No username was entered.<br>";
-    
-        else if (strlen($field) < 5) {
-            return "Username must be at least 5 characters.<br>";
-        }
-    
-        else if (preg_match("/[^a-zA-Z0-9_-]/", $field)) {
-            return "Username contains invalid characters.<br>";
-        }
-        return "";
-    }
- 
-    function validate_password($field) {
-        if ($field == "") return "No password was entered.<br>";
-    
-        else if (strlen($field) < 5) {
-            return "Password must be at least 5 characters.<br>";
-        }
-    
-        else if (!preg_match("/[a-z]/", $field) ||
-                 !preg_match("/[0-9]/", $field)) {
-                    return "Passwords require at least 1 lowercase letter and 1 number.<br>";
-                }
-        return "";
-    }
  
     function validate_credentials($username, $password) {
         // Establish connection to database
@@ -108,21 +80,6 @@
             else return "Invalid username/password combination.<br>";
         }
         else return "Invalid username/password combination.<br>";
-    }
-    
-    // Sanitization functions
-    function fix_input($string) {
-        if (get_magic_quotes_gpc()) {
-            $string = stripslashes($string);
-        }
-        return htmlentities($string);
-    }
-    
-    function fix_input_mysql($connection, $string) {
-        if (get_magic_quotes_gpc()) {
-            $string = stripslashes($string);
-        }
-        return htmlentities($conn->real_escape_string($string));
     }
 
     function log_successful_signin($connection, $username) {

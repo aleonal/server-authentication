@@ -18,6 +18,7 @@
                 border: 1px solid #999999;
             }
         </style>
+        <script src="../frontend/authentication.js"></script>
         <script src="../frontend/nav.js"></script>
     </head>
     <body>
@@ -44,13 +45,28 @@
             <tr>
                 <td style="width: 40%;">
                     <table border='0' bgcolor='#EEEEEE' cellpadding="2" cellspacing="5" class='data-table' id='add-user'>
-                        <th colspan="2">Sign in</th>
+                        <th colspan="2">Add User</th>
                         <tr>
                             <td colspan="2"><font color=red size=2 id='error'></font></td>
                         </tr>
                         <tr>
                             <td colspan="1">
-                                <form method="post" action="../backend/signin.php" onsubmit="return validate(this)">
+                                <form method="post" action="../backend/admin.php" onsubmit="return validate_add(this)">
+                                    <tr>
+                                        <td>User type:</td>
+                                        <td><select name="type" id="user_type">
+                                            <option value="Regular">Regular</option>
+                                            <option value="Admin">Admin</option>
+                                        </select></td>
+                                    </tr>
+                                    <tr>
+                                        <td>First Name:</td>
+                                        <td><input type="text" maxlength="50" name="first_name"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Name:</td>
+                                        <td><input type="text" maxlength="50" name="last_name"></td>
+                                    </tr>
                                     <tr>
                                         <td>Username:</td>
                                         <td><input type="text" maxlength="50" name="username"></td>
@@ -60,7 +76,11 @@
                                         <td><input type="password" maxlength="255" name="password"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><input type="submit" value="Sign In"></td>
+                                        <td>Confirm Password:</td>
+                                        <td><input type="password" maxlength="255" name="confirm_password"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><input type="submit" value="add"></td>
                                     </tr>
                                 </form>
                             </td>
@@ -76,6 +96,11 @@
             </tr>
         </table>
         <script>
+            var result = "<?php echo $result; ?>"
+            if (result != '') {
+                document.getElementById("error").innerHTML = result
+            }
+
             var user_data = JSON.parse('<?php echo json_encode($_SESSION); ?>')
 
             // set up column titles

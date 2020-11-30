@@ -19,8 +19,25 @@ function validate(form) {
     fail += validatePassword(form.password.value)
     if (fail == "") return true
     else {
-        alert(fail);
+        alert(fail)
         form.password.value = ""
+        return false
+    }
+}
+
+function validate_add(form) {
+    if(validate(form)) {
+
+        // check that the passwords match
+        if (form.password.normalize() !== form.confirm_password.normalize()) {
+            alert("Passwords do not match.\n")
+            form.password.value = ""
+            form.confirm_password = ""
+            return false
+        } else {
+            return true
+        }
+    } else {
         return false
     }
 }
