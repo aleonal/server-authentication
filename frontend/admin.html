@@ -90,40 +90,40 @@
                 <td style="width: 60%;">
                     <table style="overflow-y:auto;" border='0' bgcolor='#EEEEEE' cellpadding="2" cellspacing="5" class='data-table' id='display-user'>
                         <tr id='column-titles'></tr>
-                        <tr id='user-row'></tr>
                     </table>
                 </td>
             </tr>
         </table>
         <script>
             var result = "<?php echo $result; ?>"
+            var data_labels = JSON.parse('<?php echo json_encode($_SESSION); ?>')
+            var user_data = JSON.parse('<?php echo json_encode(get_user_data()); ?>')
+
+            // display error if any
             if (result != '') {
                 document.getElementById("error").innerHTML = result
             }
 
-            var user_data = JSON.parse('<?php echo json_encode($_SESSION); ?>')
-
             // set up column titles
-            for (var key in user_data) {
-                if (user_data.hasOwnProperty(key) && key != "password" && key != "check") {
+            for (var key in data_labels) {
+                if (data_labels.hasOwnProperty(key) && key != "password" && key != "check") {
                     document.getElementById("column-titles").innerHTML += 
                         "<th>" + key + "</th>"
                 }
             }
 
-            // for (var key in user_data) {
-            //     if (user_data.hasOwnProperty(key)) {
-            //         switch(key) {
-            //             case "user_type":
-            //                 continue
-            //             case "check":
-            //                 continue
-            //             default:
-            //                 document.getElementById("userdatatable").innerHTML += 
-            //                     "<tr><td style='text-align: left;'>" + key + ": </td><td style='text-align: left;'>" + user_data[key] + "</td></tr>"
-            //         }
-            //     }
-            // } 
+            // iterate through users and insert their information into user table
+            for (var user in user_data) {
+                string = ""
+                string += "<td>" + user_data[user].user_type + "</td>"
+                string += "<td>" + user_data[user].username + "</td>"
+                string += "<td>" + user_data[user].first_name + "</td>"
+                string += "<td>" + user_data[user].last_name + "</td>"
+                string += "<td>" + user_data[user].last_login + "</td>"
+                string += "<td>" + user_data[user].date_created + "</td>"
+
+                document.getElementById("display-user").innerHTML += "<tr>" + string + "</tr>"
+            }
 
             var username = "<?php echo $_SESSION['username']; ?>"
             document.getElementById("banner").innerHTML = "Be careful around here ".concat(username).concat(", we're in the admin page!")

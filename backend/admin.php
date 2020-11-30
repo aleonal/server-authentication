@@ -27,10 +27,6 @@
                     // If the username is unique, we can go ahead and insert them into the database
                     if ($result == "") {
                         $result = insert_user();
-                        
-                        if ($result == "") {
-                            $user_data = get_user_data();
-                        }
                     }
                 }
             }
